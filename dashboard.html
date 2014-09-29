@@ -11,7 +11,10 @@
   <div id="annualPerformance"></div>
   <script type="text/javascript">
 
-    var formatAsCurrency = d3.format("$,");
+    var formatAsCurrency = d3.format("$,"),
+        formatAsPercentage = d3.format("%");
+
+    /* PIE CHART */
 
     function drawPieChart() {
     	//Width, height, padding
@@ -74,14 +77,17 @@
       						  .attr("class", "arc")
       						  .attr("transform", "translate(" + (outerRadius + p/2) + "," + (p/2 + outerRadius) + ")")
                     .on("mouseover", mouseover)
-                    .on("mouseout", mouseout);
+                    .on("mouseout", mouseout)
+                    .on("click", update);
 
     	//Draw arc paths
     	arcs.append("path")
     	    .attr("fill", function(d, i) {
     	    	return color(i);
     	    })
-    	    .attr("d", arc);
+    	    .attr("d", arc)
+          .append("title")
+          .text(function(d){ return d.data.teamMember + ": " + formatAsPercentage(d.data.portion); });
 
       //Initial animation
       d3.selectAll("path").transition()
@@ -119,21 +125,38 @@
           .duration(300)
           .attr("d", arcIn);
       };
+
+      function update(d){
+        updateAnnualPerformance(d.data.teamMember, color(d));
+      }
     };
 
     drawPieChart();
 
-    function drawAnnualPerformance(){
-      var datasetAnnualPerformance = [
-        {teamMember: "Total", performance: 5324880},
-        {teamMember: "Sansa", performance: 1597440},
-        {teamMember: "Arya", performance: 905216},
-        {teamMember: "Bran", performance: 692224},
-        {teamMember: "Robb", performance: 266240},
-        {teamMember: "Jon", performance: 1863680},
-      ];
+    /* ANNUAL PERFORMANCE */
 
-      var group = "Total";
+    var datasetAnnualPerformance = [
+      {teamMember: "Total", performance: 5324880},
+      {teamMember: "Sansa", performance: 1597440},
+      {teamMember: "Arya", performance: 905216},
+      {teamMember: "Bran", performance: 692224},
+      {teamMember: "Robb", performance: 266240},
+      {teamMember: "Jon", performance: 1863680},
+    ];
+
+    var teamMember = "Total";
+
+    function datasetSelected(teamMember){
+      var data = [];
+      for (x in datasetAnnualPerformance) {
+        if (datasetAnnualPerformance[x].teamMember == teamMember){
+          data.push(datasetAnnualPerformance[x]);
+        }
+      }
+      return data;
+    };
+
+    function drawAnnualPerformance(){
 
       var w = 400;
       var h = 200;
@@ -155,6 +178,7 @@
          .attr("class", "performance")
          .attr("x", w/4.5)
          .attr("y", h/2)
+         .style("fill", "#777")
          .transition()
          .duration(1000)
          .tween("text", function(d){
@@ -168,6 +192,25 @@
 
     drawAnnualPerformance();
 
+    /* UPDATE ANNUAL PERFORMANCE */
+
+    function updateAnnualPerformance(teamMember, color){
+
+      var selectedAPData = datasetSelected(teamMember);
+
+      var updateArea = d3.select("#annualPerformance .performance")
+                         .data(selectedAPData);
+
+      updateArea.transition()
+                .duration(750)
+                .style("fill", color)
+                .tween("text", function(d){
+                  var i = d3.interpolateRound(0, d.performance);
+                  return function(t) {
+                    this.textContent = formatAsCurrency(i(t));
+                  }
+                });
+    };
 
   </script>
 </body>
