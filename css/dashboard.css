@@ -16,3 +16,20 @@ text {
 	fill: #000;
 	font-weight: normal;
 }
+
+/* ANNUAL PERFORMANCE */
+
+#annualPerformance {
+	position: absolute;
+	left: 475px;
+	top: 8px;
+}
+
+.performance {
+	fill: #777;
+	font-size: 48px;
+}
+
+.performanceTitle {
+	fill: #555;
+}
