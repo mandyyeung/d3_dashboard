@@ -9,6 +9,7 @@
 <body>
   <div id="pieChart"></div>
   <div id="annualPerformance"></div>
+  <div id="monthlyLineChart"></div>
   <script type="text/javascript">
 
     var formatAsCurrency = d3.format("$,"),
@@ -54,12 +55,14 @@
                     return d.portion;
                   });
 
-    	//Color palette via colourlovers.com (Blue Eyes)
+    	//Color palette via colourlovers.com (u.make.me.happy)
     	var color = d3.scale.ordinal()
                     .domain(function(d){
                       return d.teamMember;
                     })
-                    .range(["#005FA8","#3777BD","#5A91CC","#88B4E3","#ACE"]);
+                    .range(["#5CACC4", "#8CD19D", "#CEE879", "#FCB653", "#FF5254"]);
+                    //Alternative palette = Blue Eyes:
+                    //.range(["#005FA8","#3777BD","#5A91CC","#88B4E3","#ACE"]);
 
 
     	//Create SVG element
@@ -126,8 +129,8 @@
           .attr("d", arcIn);
       };
 
-      function update(d){
-        updateAnnualPerformance(d.data.teamMember, color(d));
+      function update(d,i){
+        updateAnnualPerformance(d.data.teamMember, color(i));
       }
     };
 
@@ -211,6 +214,17 @@
                   }
                 });
     };
+
+    /* MONTHLY LINE CHART */
+
+    function monthlyLineChart() {
+
+      var w = 400;
+      var h = 20;
+
+      var svg = d3.select("#monthlyLineChart")
+                  .append("svg");
+    }
 
   </script>
 </body>

@@ -32,3 +32,11 @@ text {
 .performanceTitle {
 	fill: #555;
 }
+
+/* MONTHLY LINE CHART */
+
+#monthlyLineChart {
+	position: absolute;
+	left: 475px;
+	top: 200px;
+}
