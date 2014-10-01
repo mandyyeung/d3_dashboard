@@ -162,7 +162,7 @@
     function drawAnnualPerformance(){
 
       var w = 400;
-      var h = 200;
+      var h = 150;
 
       var svg = d3.select("#annualPerformance").append("svg")
                   .data(datasetAnnualPerformance)
@@ -171,15 +171,15 @@
                   .style("border", "1px solid #000");
 
       var title = svg.append("g")
-                     .attr("transform", "translate(115,50)");
+                     .attr("transform", "translate(" + w/4 +","+ h/4 + ")");
 
       title.append("text")
-           .text("Revenue to Date, 2014")
+           .text("Performance, 2014")
            .attr("class", "performanceTitle");
 
       svg.append("text")
          .attr("class", "performance")
-         .attr("x", w/4.5)
+         .attr("x", w/4)
          .attr("y", h/2)
          .style("fill", "#777")
          .transition()
