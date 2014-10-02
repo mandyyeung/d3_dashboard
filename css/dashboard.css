@@ -38,7 +38,7 @@ body {
 #lineChart {
 	position: absolute;
 	left: 475px;
-	top: 175px;
+	top: 115px;
 }
 
 .domain {
@@ -49,4 +49,11 @@ body {
 	fill: none;
 	stroke: #000;
 	shape-rendering: crispEdges;
+}
+
+/* BAR CHART */
+
+#barChart {
+	position: absolute;
+	top: 470px;
 }

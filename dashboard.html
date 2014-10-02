@@ -10,6 +10,7 @@
   <div id="pieChart"></div>
   <div id="annualPerformance"></div>
   <div id="lineChart"></div>
+  <div id="barChart"></div>
   <script type="text/javascript">
 
     var formatAsCurrency = d3.format("$,"),
@@ -215,7 +216,7 @@
                 });
     };
 
-    /* MONTHLY LINE CHART */
+    /* LINE CHART */
 
     var datasetLineChart = [
       {teamMember: "Total", year: 2010, performance: 5324880},
@@ -316,6 +317,66 @@
     }
 
     drawLineChart();
+
+    /* BAR CHART */
+
+    var datasetBarChart = [
+      {teamMember: "Total", month: "January", performance: 14880},
+      {teamMember: "Total", month: "February", performance: 24880},
+      {teamMember: "Total", month: "March", performance: 21880},
+      {teamMember: "Total", month: "April", performance: 33880},
+      {teamMember: "Total", month: "May", performance: 23880},
+      {teamMember: "Total", month: "June", performance: 41880},
+      {teamMember: "Total", month: "July", performance: 38880},
+      {teamMember: "Total", month: "August", performance: 35880},
+      {teamMember: "Total", month: "September", performance: 36880}
+    ];
+
+    function drawBarChart() {
+
+      var w = 900;
+      var h = 300;
+      var m = 20;
+      var p = 2;
+
+      var svg = d3.select("#barChart")
+                  .append("svg")
+                  .attr("width", w+(2*m))
+                  .attr("height", h+(2*m))
+                  .style("border", "1px solid #000");
+
+      var x = d3.scale.linear()
+                .domain([0, datasetBarChart.length])
+                .range([0, w]);
+
+      var y = d3.scale.linear()
+                .domain([0, d3.max(datasetBarChart, function(d){return d.performance;})])
+                .range([h,0]);
+
+      var chart = svg.append("g")
+                     .attr("transform", "translate(" + m + "," + m + ")");
+
+      chart.selectAll("rect")
+         .data(datasetBarChart)
+         .enter()
+         .append("rect")
+         .attr("x", function(d,i){return x(i);})
+         .attr("width", w/datasetBarChart.length - p)
+         .attr("y", function(d){return y(d.performance);})
+         .attr("height", function(d){return h - y(d.performance);})
+         .attr("fill", "#bbb");
+
+      chart.selectAll("text")
+           .data(datasetBarChart)
+           .enter()
+           .append("text")
+           .text(function(d) {return d.month})
+           .attr("text-anchor", "middle")
+           .attr("x", function(d,i) {return (i * (w/datasetBarChart.length)) + ((w/datasetBarChart.length - p) / 2)})
+           .attr("y", h+m);
+    };
+
+    drawBarChart();
 
   </script>
 </body>
