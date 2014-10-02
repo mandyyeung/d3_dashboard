@@ -9,7 +9,7 @@
 <body>
   <div id="pieChart"></div>
   <div id="annualPerformance"></div>
-  <div id="monthlyLineChart"></div>
+  <div id="lineChart"></div>
   <script type="text/javascript">
 
     var formatAsCurrency = d3.format("$,"),
@@ -217,14 +217,19 @@
 
     /* MONTHLY LINE CHART */
 
-    function monthlyLineChart() {
+    function lineChart() {
 
       var w = 400;
-      var h = 20;
+      var h = 283;
 
-      var svg = d3.select("#monthlyLineChart")
-                  .append("svg");
+      var svg = d3.select("#lineChart")
+                  .append("svg")
+                  .attr("width", w)
+                  .attr("height", h)
+                  .style("border", "1px solid #000");
     }
+
+    lineChart();
 
   </script>
 </body>

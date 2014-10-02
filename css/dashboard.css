@@ -33,10 +33,10 @@ text {
 	fill: #555;
 }
 
-/* MONTHLY LINE CHART */
+/* LINE CHART */
 
-#monthlyLineChart {
+#lineChart {
 	position: absolute;
 	left: 475px;
-	top: 200px;
+	top: 175px;
 }
