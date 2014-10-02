@@ -6,7 +6,7 @@ body {
 
 /* PIE CHART */
 
-text {
+#pieChart text {
 	font-size: 16px;
 	fill: #fff;
 	font-weight: bold;
@@ -39,4 +39,14 @@ text {
 	position: absolute;
 	left: 475px;
 	top: 175px;
+}
+
+.domain {
+	stroke: black;
+	fill: none;
+}
+.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
 }
