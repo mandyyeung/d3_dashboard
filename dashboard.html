@@ -95,7 +95,7 @@
 
       //Initial animation
       d3.selectAll("path").transition()
-        .duration(800)
+        .duration(1000)
         .delay(10)
         .attr("d", arcIn);
 
@@ -206,7 +206,7 @@
                          .data(selectedAPData);
 
       updateArea.transition()
-                .duration(750)
+                .duration(1000)
                 .style("fill", color)
                 .tween("text", function(d){
                   var i = d3.interpolateRound(0, d.performance);
@@ -311,7 +311,7 @@
             .attr("stroke-dashoffset",lineLength); // 3. start with gap
 
        path.transition()
-            .duration(2000)
+            .duration(1000)
             .attr("stroke-dashoffset", 0); // 4. shift pattern to reveal
 
     }
@@ -337,7 +337,7 @@
       var w = 900;
       var h = 300;
       var m = 20;
-      var p = 2;
+      var p = 5;
 
       var svg = d3.select("#barChart")
                   .append("svg")
@@ -357,14 +357,14 @@
                      .attr("transform", "translate(" + m + "," + m + ")");
 
       chart.selectAll("rect")
-         .data(datasetBarChart)
-         .enter()
-         .append("rect")
-         .attr("x", function(d,i){return x(i);})
-         .attr("width", w/datasetBarChart.length - p)
-         .attr("y", function(d){return y(d.performance);})
-         .attr("height", function(d){return h - y(d.performance);})
-         .attr("fill", "#bbb");
+           .data(datasetBarChart)
+           .enter()
+           .append("rect")
+           .attr("x", function(d,i){return x(i);})
+           .attr("width", w/datasetBarChart.length - p)
+           .attr("y", function(d){return y(d.performance);})
+           .attr("height", function(d){return h - y(d.performance);})
+           .attr("fill", "#bbb");
 
       chart.selectAll("text")
            .data(datasetBarChart)
@@ -374,6 +374,7 @@
            .attr("text-anchor", "middle")
            .attr("x", function(d,i) {return (i * (w/datasetBarChart.length)) + ((w/datasetBarChart.length - p) / 2)})
            .attr("y", h+m);
+
     };
 
     drawBarChart();
