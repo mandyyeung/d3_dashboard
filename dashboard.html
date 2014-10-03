@@ -186,7 +186,7 @@
          .tween("text", function(d){
            var i = d3.interpolateRound(0, d.performance);
            return function(t) {
-             this.textContent = formatAsCurrency(i(t));
+             this.textContent = formatAsCurrency(i(t)) + " (100%)";
            }
          });
 
@@ -209,7 +209,7 @@
                 .tween("text", function(d){
                   var i = d3.interpolateRound(0, d.performance);
                   return function(t) {
-                    this.textContent = formatAsCurrency(i(t));
+                    this.textContent = formatAsCurrency(i(t)) + " (" + formatAsPercentage(i(t)/5324880) + ")";
                   }
                 });
     };
@@ -233,7 +233,7 @@
           {teamMember: "Total", year: 2013, performance: 4039880},
           {teamMember: "Total", year: 2014, performance: 5324880}
         ];
-        var w = 500;
+        var w = 400;
         var h = 283;
         var p = 30;
 
@@ -331,9 +331,9 @@
 
     function drawBarChart() {
 
-      var w = 990;
+      var w = 870;
       var h = 280;
-      var m = 20;
+      var m = 30;
       var p = 2;
 
       var svg = d3.select("#barChart")
