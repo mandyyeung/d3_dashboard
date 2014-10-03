@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Lato);
+@import url(http://fonts.googleapis.com/css?family=Lato:400,900);
 
 body {
 	font-family: 'Lato', sans-serif;
@@ -22,11 +22,12 @@ body {
 #annualPerformance {
 	position: absolute;
 	left: 475px;
-	top: 8px;
+	top: 40px;
 }
 
 .performance {
 	font-size: 48px;
+	font-weight: 900;
 }
 
 .performanceTitle {

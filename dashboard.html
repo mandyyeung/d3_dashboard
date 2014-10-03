@@ -70,8 +70,7 @@
     	var svg = d3.select("#pieChart")
       						.append("svg")
       						.attr("width", w+p)
-      						.attr("height", h+p)
-                  .style("border", "1px solid black");
+      						.attr("height", h+p);
 
     	//Set up groups
     	var arcs = svg.selectAll("g.arc")
@@ -168,8 +167,7 @@
       var svg = d3.select("#annualPerformance").append("svg")
                   .data(datasetAnnualPerformance)
                   .attr("width", w)
-                  .attr("height", h)
-                  .style("border", "1px solid #000");
+                  .attr("height", h);
 
       var title = svg.append("g")
                      .attr("transform", "translate(" + w/4 +","+ h/4 + ")");
@@ -243,7 +241,6 @@
                     .append("svg") // Adds svg element to the body
                     .attr("width", w) // with these attributes
                     .attr("height", h)
-                    .style("border", "1px solid black")
                     .style("padding", p);
 
         var x = d3.time.scale()
@@ -334,16 +331,15 @@
 
     function drawBarChart() {
 
-      var w = 900;
-      var h = 300;
+      var w = 990;
+      var h = 280;
       var m = 20;
-      var p = 5;
+      var p = 2;
 
       var svg = d3.select("#barChart")
                   .append("svg")
                   .attr("width", w+(2*m))
-                  .attr("height", h+(2*m))
-                  .style("border", "1px solid #000");
+                  .attr("height", h+(2*m));
 
       var x = d3.scale.linear()
                 .domain([0, datasetBarChart.length])
@@ -356,15 +352,20 @@
       var chart = svg.append("g")
                      .attr("transform", "translate(" + m + "," + m + ")");
 
-      chart.selectAll("rect")
-           .data(datasetBarChart)
-           .enter()
-           .append("rect")
-           .attr("x", function(d,i){return x(i);})
-           .attr("width", w/datasetBarChart.length - p)
-           .attr("y", function(d){return y(d.performance);})
-           .attr("height", function(d){return h - y(d.performance);})
-           .attr("fill", "#bbb");
+      var bars = chart.selectAll('rect')
+                     .data(datasetBarChart)
+                     .enter()
+                     .append('rect')
+                     .attr('x', function(d, i){return i*(w/datasetBarChart.length);})
+                     .attr('y', function(d){return h;})
+                     .attr('width', w/datasetBarChart.length - p)
+                     .attr('height', 0)
+                     .attr("fill", "#bbb");
+
+      bars.transition()
+             .duration(1000)
+             .attr('y', function(d){return y(d.performance);})
+             .attr('height', function(d){return h - y(d.performance);});
 
       chart.selectAll("text")
            .data(datasetBarChart)
