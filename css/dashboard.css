@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:400,900);
 
 body {
-	font-family: 'Lato', sans-serif;
+	font-family: 'Lato', 'Open Sans', sans-serif;
 }
 
 /* PIE CHART */
@@ -57,4 +57,11 @@ body {
 #barChart {
 	position: absolute;
 	top: 470px;
+	font-size: 16px;
+}
+
+#barChart .breakdown {
+	fill: #555;
+	font-weight: bold;
+	text-anchor: middle;
 }

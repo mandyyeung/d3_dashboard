@@ -5,6 +5,10 @@
   <title>D3 Dashboard</title>
   <link rel="stylesheet" href="css/dashboard.css">
   <script src="js/d3.js"></script>
+  <script src="js/piechart.js"></script>
+  <script src="js/annualperformance.js"></script>
+  <script scr="js/linechart.js"></script>
+  <script src="js/barchart.js"></script>
 </head>
 <body>
   <div id="pieChart"></div>
@@ -16,213 +20,21 @@
     var formatAsCurrency = d3.format("$,"),
         formatAsPercentage = d3.format("%");
 
-    /* PIE CHART */
-
-    function drawPieChart() {
-    	//Width, height, padding
-    	var w = 400;
-    	var h = 400;
-      var p = 50;
-
-    	var datasetPieChart = [
-        {teamMember: "Sansa", portion: 0.30},
-        {teamMember: "Arya", portion: 0.17},
-        {teamMember: "Bran", portion: 0.13},
-        {teamMember: "Robb", portion: 0.05},
-        {teamMember: "Jon", portion: 0.35},
-      ];
-
-    	var outerRadius = w / 2;
-    	var outerRadiusOut = w / 1.9;
-      var innerRadiusInitial = outerRadius * 0.999;
-      var innerRadius = w / 4;
-
-    	var arc = d3.svg
-                  .arc()
-    							.innerRadius(innerRadiusInitial)
-    							.outerRadius(outerRadius);
-      var arcOut = d3.svg
-                     .arc()
-                     .innerRadius(innerRadius)
-                     .outerRadius(outerRadiusOut);
-
-      var arcIn = d3.svg
-                    .arc()
-                    .innerRadius(innerRadius)
-                    .outerRadius(outerRadius);
-
-    	var pie = d3.layout.pie()
-                  .value(function(d) {
-                    return d.portion;
-                  });
-
-    	//Color palette via colourlovers.com (u.make.me.happy)
-    	var color = d3.scale.ordinal()
-                    .domain(function(d){
-                      return d.teamMember;
-                    })
-                    .range(["#5CACC4", "#8CD19D", "#CEE879", "#FCB653", "#FF5254"]);
-                    //Alternative palette = Blue Eyes:
-                    //.range(["#005FA8","#3777BD","#5A91CC","#88B4E3","#ACE"]);
-
-
-    	//Create SVG element
-    	var svg = d3.select("#pieChart")
-      						.append("svg")
-      						.attr("width", w+p)
-      						.attr("height", h+p);
-
-    	//Set up groups
-    	var arcs = svg.selectAll("g.arc")
-      						  .data(pie(datasetPieChart))
-      						  .enter()
-      						  .append("g")
-      						  .attr("class", "arc")
-      						  .attr("transform", "translate(" + (outerRadius + p/2) + "," + (p/2 + outerRadius) + ")")
-                    .on("mouseover", mouseover)
-                    .on("mouseout", mouseout)
-                    .on("click", update);
-
-    	//Draw arc paths
-    	arcs.append("path")
-    	    .attr("fill", function(d, i) {
-    	    	return color(i);
-    	    })
-    	    .attr("d", arc)
-          .append("title")
-          .text(function(d){ return d.data.teamMember + ": " + formatAsPercentage(d.data.portion); });
-
-      //Initial animation
-      d3.selectAll("path").transition()
-        .duration(1000)
-        .delay(10)
-        .attr("d", arcIn);
-
-    	//Labels
-    	arcs.append("text")
-    	    .attr("transform", function(d) {
-    	    	return "translate(" + arcIn.centroid(d) + ")";
-    	    })
-    	    .attr("text-anchor", "middle")
-    	    .text(function(d) {
-    	    	return d.data.teamMember;
-    	    });
-
-      //Title in the middle
-      svg.append("text")
-         .attr("dy", "14em")
-         .attr("dx", "14em")
-         .attr("text-anchor", "middle")
-         .text("Revenue Share, 2014")
-         .attr("class", "title");
-
-      //Mouseover animations
-      function mouseover(){
-        d3.select(this).select("path").transition()
-          .duration(300)
-          .attr("d", arcOut);
-      };
-
-      function mouseout(){
-        d3.select(this).select("path").transition()
-          .duration(300)
-          .attr("d", arcIn);
-      };
-
-      function update(d,i){
-        updateAnnualPerformance(d.data.teamMember, color(i));
-      }
-    };
-
-    drawPieChart();
-
-    /* ANNUAL PERFORMANCE */
-
-    var datasetAnnualPerformance = [
-      {teamMember: "Total", performance: 5324880},
-      {teamMember: "Sansa", performance: 1597440},
-      {teamMember: "Arya", performance: 905216},
-      {teamMember: "Bran", performance: 692224},
-      {teamMember: "Robb", performance: 266240},
-      {teamMember: "Jon", performance: 1863680},
-    ];
-
-    var teamMember = "Total";
-
-    function datasetSelected(teamMember){
+    function datasetSelected(teamMember, dataset){
       var data = [];
-      for (x in datasetAnnualPerformance) {
-        if (datasetAnnualPerformance[x].teamMember == teamMember){
-          data.push(datasetAnnualPerformance[x]);
+      for (x in dataset) {
+        if (dataset[x].teamMember == teamMember){
+          data.push(dataset[x]);
         }
       }
       return data;
     };
 
-    function drawAnnualPerformance(){
-
-      var w = 400;
-      var h = 150;
-
-      var svg = d3.select("#annualPerformance").append("svg")
-                  .data(datasetAnnualPerformance)
-                  .attr("width", w)
-                  .attr("height", h);
-
-      var title = svg.append("g")
-                     .attr("transform", "translate(" + w/4 +","+ h/4 + ")");
-
-      title.append("text")
-           .text("Performance, 2014")
-           .attr("class", "performanceTitle");
-
-      svg.append("text")
-         .attr("class", "performance")
-         .attr("x", w/4)
-         .attr("y", h/2)
-         .style("fill", "#777")
-         .transition()
-         .duration(1000)
-         .tween("text", function(d){
-           var i = d3.interpolateRound(0, d.performance);
-           return function(t) {
-             this.textContent = formatAsCurrency(i(t)) + " (100%)";
-           }
-         });
-
-    };
-
+    drawPieChart();
     drawAnnualPerformance();
-
-    /* UPDATE ANNUAL PERFORMANCE */
-
-    function updateAnnualPerformance(teamMember, color){
-
-      var selectedAPData = datasetSelected(teamMember);
-
-      var updateArea = d3.select("#annualPerformance .performance")
-                         .data(selectedAPData);
-
-      updateArea.transition()
-                .duration(1000)
-                .style("fill", color)
-                .tween("text", function(d){
-                  var i = d3.interpolateRound(0, d.performance);
-                  return function(t) {
-                    this.textContent = formatAsCurrency(i(t)) + " (" + formatAsPercentage(i(t)/5324880) + ")";
-                  }
-                });
-    };
+    drawBarChart();
 
     /* LINE CHART */
-
-    var datasetLineChart = [
-      {teamMember: "Total", year: 2010, performance: 5324880},
-      {teamMember: "Total", year: 2011, performance: 5324880},
-      {teamMember: "Total", year: 2012, performance: 5324880},
-      {teamMember: "Total", year: 2013, performance: 5324880},
-      {teamMember: "Total", year: 2014, performance: 5324880}
-    ];
 
     function drawLineChart() {
 
@@ -233,152 +45,93 @@
           {teamMember: "Total", year: 2013, performance: 4039880},
           {teamMember: "Total", year: 2014, performance: 5324880}
         ];
-        var w = 400;
-        var h = 283;
-        var p = 30;
 
-        var svg = d3.select("#lineChart") // Finds the body in the DOM
-                    .append("svg") // Adds svg element to the body
-                    .attr("width", w) // with these attributes
-                    .attr("height", h)
-                    .style("padding", p);
+      var w = 400;
+      var h = 283;
+      var p = 30;
 
-        var x = d3.time.scale()
-                  .domain(d3.extent(datasetLineChart, function(d) {return d.year;}))
-                  .range([p, w-p]);
+      var svg = d3.select("#lineChart") // Finds the body in the DOM
+                  .append("svg") // Adds svg element to the body
+                  .attr("width", w) // with these attributes
+                  .attr("height", h)
+                  .style("padding", p);
 
-        var y = d3.scale.linear()
-                  .domain([0, d3.max(datasetLineChart, function(d) { return d.performance;
-                  })*1.1])
-                  .range([h - p, p]);
-
-        var xAxis = d3.svg.axis()
-                      .scale(x)
-                      .tickFormat(d3.format("04d"));
-
-        var yAxis = d3.svg.axis()
-                      .scale(y)
-                      .tickFormat(d3.format("s"))
-                      .orient('left');
-
-        svg.selectAll("circle")
-            .data(datasetLineChart)
-            .enter()
-            .append("circle")
-            .attr("cx", function(d,i){
-              return x(d.year);
-            })
-            .attr("cy", function(d){
-              return y(d.performance);
-            })
-            .attr("r", 5)
-            .attr("fill", "#ccc")
-            .attr("stroke", "#545")
-            .attr("stroke-width","2px");
-
-        svg.append('g')
-          .attr('class', 'axis')
-          .attr('transform', 'translate(0,' + (h - p) + ')')
-          .call(xAxis);
-
-        svg.append('g')
-          .attr('class', 'axis')
-          .attr('transform', 'translate(' + (p) + ',0)')
-          .call(yAxis);
-
-        var drawLine = d3.svg.line()
-                          .x(function(d) {
-                            return x(d.year);
-                          })
-                          .y(function(d) {
-                            return y(d.performance);
-                          })
-                          .interpolate("cardinal");
-
-        var path = svg.append('path')
-            .attr('d', drawLine(datasetLineChart))
-            .attr('stroke', '#000')
-            .attr('stroke-width', 3)
-            .attr('fill', 'none');
-
-       var lineLength = path.node().getTotalLength(); // 1. get length
-
-       path.attr("stroke-dasharray", // 2. pattern big enough to hide line
-                       lineLength + ", "+lineLength)
-            .attr("stroke-dashoffset",lineLength); // 3. start with gap
-
-       path.transition()
-            .duration(1000)
-            .attr("stroke-dashoffset", 0); // 4. shift pattern to reveal
-
-    }
-
-    drawLineChart();
-
-    /* BAR CHART */
-
-    var datasetBarChart = [
-      {teamMember: "Total", month: "January", performance: 14880},
-      {teamMember: "Total", month: "February", performance: 24880},
-      {teamMember: "Total", month: "March", performance: 21880},
-      {teamMember: "Total", month: "April", performance: 33880},
-      {teamMember: "Total", month: "May", performance: 23880},
-      {teamMember: "Total", month: "June", performance: 41880},
-      {teamMember: "Total", month: "July", performance: 38880},
-      {teamMember: "Total", month: "August", performance: 35880},
-      {teamMember: "Total", month: "September", performance: 36880}
-    ];
-
-    function drawBarChart() {
-
-      var w = 870;
-      var h = 280;
-      var m = 30;
-      var p = 2;
-
-      var svg = d3.select("#barChart")
-                  .append("svg")
-                  .attr("width", w+(2*m))
-                  .attr("height", h+(2*m));
-
-      var x = d3.scale.linear()
-                .domain([0, datasetBarChart.length])
-                .range([0, w]);
+      var x = d3.time.scale()
+                .domain(d3.extent(datasetLineChart, function(d) {return d.year;}))
+                .range([p, w-p]);
 
       var y = d3.scale.linear()
-                .domain([0, d3.max(datasetBarChart, function(d){return d.performance;})])
-                .range([h,0]);
+                .domain([0, d3.max(datasetLineChart, function(d) { return d.performance;
+                })*1.1])
+                .range([h - p, p]);
 
-      var chart = svg.append("g")
-                     .attr("transform", "translate(" + m + "," + m + ")");
+      var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .tickFormat(d3.format("04d"));
 
-      var bars = chart.selectAll('rect')
-                     .data(datasetBarChart)
-                     .enter()
-                     .append('rect')
-                     .attr('x', function(d, i){return i*(w/datasetBarChart.length);})
-                     .attr('y', function(d){return h;})
-                     .attr('width', w/datasetBarChart.length - p)
-                     .attr('height', 0)
-                     .attr("fill", "#bbb");
+      var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .tickFormat(d3.format("s"))
+                    .orient('left');
 
-      bars.transition()
-             .duration(1000)
-             .attr('y', function(d){return y(d.performance);})
-             .attr('height', function(d){return h - y(d.performance);});
+      svg.selectAll("circle")
+          .data(datasetLineChart)
+          .enter()
+          .append("circle")
+          .attr("cx", function(d,i){
+            return x(d.year);
+          })
+          .attr("cy", function(d){
+            return y(d.performance);
+          })
+          .attr("r", 5)
+          .attr("fill", "#ccc")
+          .attr("stroke", "#545")
+          .attr("stroke-width","2px");
 
-      chart.selectAll("text")
-           .data(datasetBarChart)
-           .enter()
-           .append("text")
-           .text(function(d) {return d.month})
-           .attr("text-anchor", "middle")
-           .attr("x", function(d,i) {return (i * (w/datasetBarChart.length)) + ((w/datasetBarChart.length - p) / 2)})
-           .attr("y", h+m);
+      svg.append('g')
+        .attr('class', 'axis')
+        .attr('transform', 'translate(0,' + (h - p) + ')')
+        .call(xAxis);
+
+      svg.append('g')
+        .attr('class', 'axis')
+        .attr('transform', 'translate(' + (p) + ',0)')
+        .call(yAxis);
+
+      var drawLine = d3.svg.line()
+                        .x(function(d) {
+                          return x(d.year);
+                        })
+                        .y(function(d) {
+                          return y(d.performance);
+                        })
+                        .interpolate("cardinal");
+
+      var path = svg.append('path')
+          .attr('d', drawLine(datasetLineChart))
+          .attr('stroke', '#000')
+          .attr('stroke-width', 3)
+          .attr('fill', 'none');
+
+     var lineLength = path.node().getTotalLength(); // 1. get length
+
+     path.attr("stroke-dasharray", // 2. pattern big enough to hide line
+                     lineLength + ", "+lineLength)
+          .attr("stroke-dashoffset",lineLength); // 3. start with gap
+
+     path.transition()
+          .duration(1000)
+          .attr("stroke-dashoffset", 0); // 4. shift pattern to reveal
 
     };
 
-    drawBarChart();
+    function updateLineChart(teamMember, color) {
+
+
+    };
+
+    drawLineChart();
 
   </script>
 </body>
