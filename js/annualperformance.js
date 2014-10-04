@@ -13,7 +13,7 @@ var teamMember = "Total";
 
 function drawAnnualPerformance(){
 
-  var w = 400;
+  var w = 350;
   var h = 150;
 
   var svg = d3.select("#annualPerformance").append("svg")

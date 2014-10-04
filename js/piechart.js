@@ -2,9 +2,9 @@
 
 function drawPieChart() {
   //Width, height, padding
-  var w = 400;
-  var h = 400;
-  var p = 50;
+  var w = 350;
+  var h = 350;
+  var p = 30;
 
   var datasetPieChart = [
     {teamMember: "Sansa", portion: 0.30},
@@ -92,8 +92,8 @@ function drawPieChart() {
 
   //Title in the middle
   svg.append("text")
-     .attr("dy", "14em")
-     .attr("dx", "14em")
+     .attr("dy", "12em")
+     .attr("dx", "12em")
      .attr("text-anchor", "middle")
      .text("Revenue Share, 2014")
      .attr("class", "title");

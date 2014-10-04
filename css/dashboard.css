@@ -21,12 +21,12 @@ body {
 
 #annualPerformance {
 	position: absolute;
-	left: 475px;
-	top: 40px;
+	left: 470px;
+	top: 10px;
 }
 
 .performance {
-	font-size: 48px;
+	font-size: 32px;
 	font-weight: 900;
 }
 
@@ -38,8 +38,8 @@ body {
 
 #lineChart {
 	position: absolute;
-	left: 475px;
-	top: 115px;
+	left: 430px;
+	top: 80px;
 }
 
 .domain {
@@ -56,7 +56,7 @@ body {
 
 #barChart {
 	position: absolute;
-	top: 470px;
+	top: 430px;
 	font-size: 16px;
 }
 

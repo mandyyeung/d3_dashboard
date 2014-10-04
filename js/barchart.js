@@ -59,7 +59,7 @@ var datasetBarChart = [
 
 function drawBarChart() {
 
-  var w = 870; //width
+  var w = 800; //width
   var h = 280; //height
   var m = 30; //margin
   var p = 2; //padding for bars
@@ -137,7 +137,7 @@ function drawBarChart() {
 
 function updateBarChart(teamMember, color) {
 
-    var w = 870;
+    var w = 800;
     var h = 280;
     var m = 30;
     var p = 2;
