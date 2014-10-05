@@ -85,29 +85,29 @@ function drawBarChart() {
                  .attr("transform", "translate(" + m + "," + m + ")");
 
   var bars = chart.selectAll('rect')
-                 .data(selectedBCData)
-                 .enter()
-                 .append('rect')
-                 .attr('x', function(d, i){return i*(w/selectedBCData.length);})
-                 .attr('y', function(d){return h;})
-                 .attr('width', w/selectedBCData.length - p)
-                 .attr('height', 0)
-                 .attr("fill", "#fff");
+                  .data(selectedBCData)
+                  .enter()
+                  .append('rect')
+                  .attr('x', function(d, i){return i*(w/selectedBCData.length);})
+                  .attr('y', function(d){return h;})
+                  .attr('width', w/selectedBCData.length - p)
+                  .attr('height', 0)
+                  .attr("fill", "#fff");
 
   bars.transition()
-         .duration(1000)
-         .attr('y', function(d){return y(d.performance);})
-         .attr('height', function(d){return h - y(d.performance);})
-         .attr("fill", "#bbb");
+      .duration(1000)
+      .attr('y', function(d){return y(d.performance);})
+      .attr('height', function(d){return h - y(d.performance);})
+      .attr("fill", "#bbb");
 
   svg.selectAll("text")
-           .data(selectedBCData)
-           .enter()
-           .append("text")
-           .text(function(d) {return d.month})
-           .attr("text-anchor", "middle")
-           .attr("x", function(d,i) {return (i * (w/selectedBCData.length)) + (w/(selectedBCData.length + p))})
-           .attr("y", h+50);
+     .data(selectedBCData)
+     .enter()
+     .append("text")
+     .text(function(d) {return d.month})
+     .attr("text-anchor", "middle")
+     .attr("x", function(d,i) {return (i * (w/selectedBCData.length)) + (w/(selectedBCData.length + p))})
+     .attr("y", h+50);
 
   chart.selectAll("text")
         .data(selectedBCData)
