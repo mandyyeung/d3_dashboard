@@ -4,6 +4,14 @@ body {
 	font-family: 'Lato', 'Open Sans', sans-serif;
 }
 
+.hide {
+	display: none;
+}
+
+.sticky, .show {
+	display: inline;
+}
+
 /* PIE CHART */
 
 #pieChart text {

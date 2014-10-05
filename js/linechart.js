@@ -83,14 +83,18 @@ function drawLineChart() {
                         .data(datasetNest)
                         .enter()
                         .append("g")
-                        .attr("class", function(d){return d.key + "-line";});
+                        .attr("id", function(d){return d.key + "-line";})
+                        .attr("class", "hide");
+
+  d3.select("#Total-line")
+    .attr("class", "sticky");
 
   var drawLine = d3.svg.line()
                  .x(function(d) {return x(d.year);})
                  .y(function(d) {return y(d.performance);})
                  .interpolate("cardinal");
 
-  var dots = d3.select("."+ teamMember +"-line")
+  var dots = d3.select("#"+ teamMember +"-line")
                 .selectAll("circle")
                 .data(selectedLCData)
                 .enter()
@@ -104,7 +108,7 @@ function drawLineChart() {
                 .on("mouseover", tip.show)
                 .on("mouseout", tip.hide);
 
-  var path = d3.select("."+ teamMember +"-line")
+  var path = d3.select("#"+ teamMember +"-line")
                .append("path")
                .attr("d", drawLine(selectedLCData))
                .attr("stroke", "#000")
@@ -150,6 +154,12 @@ function updateLineChart(teamMember, color) {
   var p = 30;
   var svg = d3.select("#lineChart svg")
 
+  d3.selectAll(".show")
+    .attr("class", "hide");
+    
+  d3.select("#"+teamMember+"-line")
+    .attr("class", "show");
+
   var x = d3.time.scale()
             .domain(d3.extent(datasetLineChart, function(d) {return d.year;}))
             .range([p, w-p]);
@@ -164,7 +174,7 @@ function updateLineChart(teamMember, color) {
                  .y(function(d) {return y(d.performance);})
                  .interpolate("cardinal");
 
-  var dots = d3.select("."+ teamMember +"-line")
+  var dots = d3.select("#"+ teamMember +"-line")
                 .selectAll("circle")
                 .data(selectedLCData)
                 .enter()
@@ -176,7 +186,7 @@ function updateLineChart(teamMember, color) {
                 .attr("stroke", color)
                 .attr("stroke-width","2px");
 
-  var path = d3.select("."+ teamMember +"-line")
+  var path = d3.select("#"+ teamMember +"-line")
                .append("path")
                .attr("d", drawLine(selectedLCData))
                .attr("stroke", color)
