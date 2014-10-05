@@ -25,8 +25,8 @@ function drawAnnualPerformance(){
                  .attr("transform", "translate(" + w/6 +","+ h/4 + ")");
 
   title.append("text")
-       .text("Performance, 2014")
-       .attr("class", "performanceTitle");
+       .attr("class", "performanceTitle")
+       .text("Performance, 2014");
 
   svg.append("text")
      .attr("class", "performance")
@@ -62,4 +62,8 @@ function updateAnnualPerformance(teamMember, color){
                 this.textContent = formatAsCurrency(i(t)) + " (" + formatAsPercentage(i(t)/5324880) + ")";
               }
             });
+
+  d3.select("text.performanceTitle")
+    .text(teamMember + "'s Performance, 2014");
+
 };

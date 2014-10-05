@@ -144,9 +144,6 @@ function updateBarChart(teamMember, color) {
 
     var selectedBCData = datasetSelected(teamMember, datasetBarChart);
 
-    var updateArea = d3.select("#barChart")
-                     .data(selectedBCData);
-
     var x = d3.scale.linear()
               .domain([0, selectedBCData.length])
               .range([0, w]);
@@ -161,32 +158,22 @@ function updateBarChart(teamMember, color) {
      svg.selectAll("rect")
         .data(selectedBCData)
         .transition()
-        .duration(750)
-        .attr("x", function(d, i) {
-            return x(i);
-        })
+        .duration(1000)
+        .attr("x", function(d, i) {return x(i);})
         .attr("width", w / selectedBCData.length - p)
-        .attr("y", function(d) {
-          return y(d.performance);
-        })
-        .attr("height", function(d) {
-            return h-y(d.performance);
-        })
+        .attr("y", function(d) {return y(d.performance);})
+        .attr("height", function(d) {return h-y(d.performance);})
         .attr("fill", color);
 
       svg.selectAll(".breakdown")
          .data(selectedBCData)
          .transition()
-         .duration(750)
-         .text(function(d) {
-             return formatAsCurrency(d.performance);
-         })
+         .duration(1000)
+         .text(function(d) {return formatAsCurrency(d.performance);})
          .attr("x", function(d, i) {
              return (i * (w / selectedBCData.length)) + ((w / selectedBCData.length - p) / 2);
          })
-         .attr("y", function(d) {
-             return y(d.performance) + 20;
-         });
+         .attr("y", function(d) {return y(d.performance) + 20;});
 
       svg.selectAll("text.title")
          .text(teamMember + "'s Monthly Sales Breakdown (2014 to Date)");

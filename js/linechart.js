@@ -43,6 +43,10 @@ function drawLineChart() {
 
   var selectedLCData = datasetSelected(teamMember, datasetLineChart);
 
+  var datasetNest = d3.nest()
+                      .key(function(d){return d.teamMember;})
+                      .entries(datasetLineChart);
+
   var svg = d3.select("#lineChart") // Finds the body in the DOM
               .append("svg") // Adds svg element to the body
               .attr("width", w) // with these attributes
@@ -50,12 +54,12 @@ function drawLineChart() {
               .style("padding", p);
 
   var x = d3.time.scale()
-            .domain(d3.extent(selectedLCData, function(d) {return d.year;}))
+            .domain(d3.extent(datasetLineChart, function(d) {return d.year;}))
             .range([p, w-p]);
 
   var y = d3.scale.linear()
-            .domain([d3.min(selectedLCData, function(d) {return d.performance})*0.9, d3.max(selectedLCData, function(d) { return d.performance;
-            })*1.1])
+            .domain([d3.min(datasetLineChart, function(d) {return d.performance}), d3.max(datasetLineChart, function(d) { return d.performance;
+            })])
             .range([h - p, p]);
 
   var xAxis = d3.svg.axis()
@@ -67,64 +71,69 @@ function drawLineChart() {
                 .tickFormat(d3.format("s"))
                 .orient('left');
 
+  var drawLine = d3.svg.line()
+                 .x(function(d) {return x(d.year);})
+                 .y(function(d) {return y(d.performance);})
+                 .interpolate("cardinal");
+
   svg.selectAll("circle")
       .data(selectedLCData)
       .enter()
       .append("circle")
-      .attr("cx", function(d,i){
-        return x(d.year);
-      })
-      .attr("cy", function(d){
-        return y(d.performance);
-      })
+      .attr("cx", function(d,i){return x(d.year);})
+      .attr("cy", function(d){return y(d.performance);})
       .attr("r", 5)
       .attr("fill", "#ccc")
       .attr("stroke", "#545")
       .attr("stroke-width","2px");
-
-  svg.append("g")
-     .attr("class", "axis")
-     .attr("transform", 'translate(0,' + (h - p) + ')')
-     .call(xAxis);
-
-  svg.append('g')
-       .attr('class', 'axis')
-       .attr('transform', 'translate(' + p + ',0)')
-       .call(yAxis)
-     .append("text")
-       .attr("x", 340)
-       .attr("y", 235)
-       .attr("dy", ".7em")
-       .style("text-anchor", "end")
-       .style("fill", "#ccc")
-       .text("Average Individual Performance ($)");
 
   var drawLine = d3.svg.line()
                    .x(function(d) {return x(d.year);})
                    .y(function(d) {return y(d.performance);})
                    .interpolate("cardinal");
 
-  var path = svg.append('path')
-      .attr('d', drawLine(selectedLCData))
-      .attr('stroke', '#000')
-      .attr('stroke-width', 3)
-      .attr('fill', 'none');
+  var path = svg.append("path")
+      .attr("d", drawLine(selectedLCData))
+      .attr("stroke", "#000")
+      .attr("stroke-width", 3)
+      .attr("fill", "none");
 
- var lineLength = path.node().getTotalLength(); // 1. get length
+  var lineLength = path.node().getTotalLength();
 
- path.attr("stroke-dasharray", // 2. pattern big enough to hide line
-                 lineLength + ", "+lineLength)
-      .attr("stroke-dashoffset",lineLength); // 3. start with gap
+  path.attr("stroke-dasharray",lineLength + ", "+lineLength)
+      .attr("stroke-dashoffset",lineLength);
 
- path.transition()
+  path.transition()
       .duration(1000)
-      .attr("stroke-dashoffset", 0); // 4. shift pattern to reveal
+      .attr("stroke-dashoffset", 0);
+
+  svg.append("g")
+     .attr("class", "axis")
+     .attr("transform", 'translate(0,' + (h - p) + ')')
+     .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "axis")
+       .attr("transform", "translate(" + p + ",0)")
+       .call(yAxis)
+     .append("text")
+       .attr("x", 340)
+       .attr("y", 225)
+       .attr("dy", ".7em")
+       .style("text-anchor", "end")
+       .style("fill", "#ccc")
+       .text("Average Individual Performance ($)");
 
 };
 
+/* UPDATE LINE CHART */
+
 function updateLineChart(teamMember, color) {
 
-var selectedLCData = datasetSelected(teamMember, datasetLineChart);
-
+  var selectedLCData = datasetSelected(teamMember, datasetLineChart);
+  var w = 400;
+  var h = 283;
+  var p = 30;
+  var svg = d3.select("#lineChart svg")
 
 };
