@@ -1,7 +1,6 @@
 d3_dashboard
 ============
-Sample dashboard using D3.js to explore employee revenue contributions and performance
-
+Sample dashboard using D3.js to explore employee revenue contributions and performance<br>
 ([live demo](http://mandyyeung.github.io/d3_dashboard))
 
 **Screenshot**
