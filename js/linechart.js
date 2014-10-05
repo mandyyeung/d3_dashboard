@@ -47,11 +47,19 @@ function drawLineChart() {
                       .key(function(d){return d.teamMember;})
                       .entries(datasetLineChart);
 
+  var tip = d3.tip()
+              .attr('class', 'd3-tip')
+              .offset([-10, 0])
+              .html(function(d) {
+                return d.year + " : <span style='color:#ccc'>" + formatAsCurrency(d.performance) + "</span>";
+              });
+
   var svg = d3.select("#lineChart") // Finds the body in the DOM
               .append("svg") // Adds svg element to the body
               .attr("width", w) // with these attributes
               .attr("height", h)
-              .style("padding", p);
+              .style("padding", p)
+              .call(tip);
 
   var x = d3.time.scale()
             .domain(d3.extent(datasetLineChart, function(d) {return d.year;}))
@@ -85,7 +93,9 @@ function drawLineChart() {
       .attr("r", 5)
       .attr("fill", "#ccc")
       .attr("stroke", "#545")
-      .attr("stroke-width","2px");
+      .attr("stroke-width","2px")
+      .on("mouseover", tip.show)
+      .on("mouseout", tip.hide);
 
   var drawLine = d3.svg.line()
                    .x(function(d) {return x(d.year);})
@@ -118,11 +128,11 @@ function drawLineChart() {
        .call(yAxis)
      .append("text")
        .attr("x", 340)
-       .attr("y", 225)
+       .attr("y", 25)
        .attr("dy", ".7em")
        .style("text-anchor", "end")
        .style("fill", "#ccc")
-       .text("Average Individual Performance ($)");
+       .text("Average Individual Performance");
 
 };
 
