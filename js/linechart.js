@@ -154,9 +154,12 @@ function updateLineChart(teamMember, color) {
   var p = 30;
   var svg = d3.select("#lineChart svg")
 
-  d3.selectAll(".show")
-    .attr("class", "hide");
+  d3.selectAll(".show path")
+    .remove();
     
+  d3.selectAll(".show circle")
+    .remove();
+
   d3.select("#"+teamMember+"-line")
     .attr("class", "show");
 
