@@ -152,11 +152,20 @@ function updateLineChart(teamMember, color) {
   var w = 400;
   var h = 283;
   var p = 30;
+
+  var tip = d3.tip()
+              .attr("class", "d3-tip")
+              .offset([-10, 0])
+              .html(function(d) {
+                return d.year + " : <span style='color:#ccc'>" + formatAsCurrency(d.performance) + "</span>";
+              });
+
   var svg = d3.select("#lineChart svg")
+              .call(tip);
 
   d3.selectAll(".show path")
     .remove();
-    
+
   d3.selectAll(".show circle")
     .remove();
 
@@ -187,7 +196,9 @@ function updateLineChart(teamMember, color) {
                 .attr("r", 5)
                 .attr("fill", "#ccc")
                 .attr("stroke", color)
-                .attr("stroke-width","2px");
+                .attr("stroke-width","2px")
+                .on("mouseover", tip.show)
+                .on("mouseout", tip.hide);
 
   var path = d3.select("#"+ teamMember +"-line")
                .append("path")
