@@ -1,3 +1,6 @@
 d3_dashboard
 ============
-Work in progress
+Sample dashboard using D3.js to explore employee revenue contributions and performance
+
+**Screenshot**
+![Dashboard in action](http://i.imgur.com/8ftVNcf.png)
