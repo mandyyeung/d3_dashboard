@@ -11,7 +11,7 @@ function drawPieChart() {
     {teamMember: "Arya", portion: 0.17},
     {teamMember: "Bran", portion: 0.13},
     {teamMember: "Robb", portion: 0.05},
-    {teamMember: "Jon", portion: 0.35},
+    {teamMember: "Jon", portion: 0.35}
   ];
 
   var outerRadius = w / 2;
@@ -34,15 +34,11 @@ function drawPieChart() {
                 .outerRadius(outerRadius);
 
   var pie = d3.layout.pie()
-              .value(function(d) {
-                return d.portion;
-              });
+              .value(function(d) {return d.portion;});
 
   //Color palette via colourlovers.com (u.make.me.happy)
   var color = d3.scale.ordinal()
-                .domain(function(d){
-                  return d.teamMember;
-                })
+                .domain(function(d){return d.teamMember;})
                 .range(["#5CACC4", "#8CD19D", "#CEE879", "#FCB653", "#FF5254"]);
                 //Alternative palette = Blue Eyes:
                 //.range(["#005FA8","#3777BD","#5A91CC","#88B4E3","#ACE"]);
@@ -67,9 +63,7 @@ function drawPieChart() {
 
   //Draw arc paths
   arcs.append("path")
-      .attr("fill", function(d, i) {
-        return color(i);
-      })
+      .attr("fill", function(d, i) {return color(i);})
       .attr("d", arc)
       .append("title")
       .text(function(d){ return d.data.teamMember + ": " + formatAsPercentage(d.data.portion); });
@@ -82,13 +76,9 @@ function drawPieChart() {
 
   //Labels
   arcs.append("text")
-      .attr("transform", function(d) {
-        return "translate(" + arcIn.centroid(d) + ")";
-      })
+      .attr("transform", function(d) {return "translate(" + arcIn.centroid(d) + ")";})
       .attr("text-anchor", "middle")
-      .text(function(d) {
-        return d.data.teamMember;
-      });
+      .text(function(d) {return d.data.teamMember;});
 
   //Title in the middle
   svg.append("text")

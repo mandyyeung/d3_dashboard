@@ -6,7 +6,7 @@ var datasetAnnualPerformance = [
   {teamMember: "Arya", performance: 905216},
   {teamMember: "Bran", performance: 692224},
   {teamMember: "Robb", performance: 266240},
-  {teamMember: "Jon", performance: 1863680},
+  {teamMember: "Jon", performance: 1863680}
 ];
 
 var teamMember = "Total";
