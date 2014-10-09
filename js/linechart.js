@@ -33,6 +33,13 @@ var datasetLineChart = [
     {teamMember: "Robb", year: 2014, performance: 266240}
   ];
 
+var tip = d3.tip()
+            .attr("class", "d3-tip")
+            .offset([-10, 0])
+            .html(function(d) {
+              return d.year + " : <span style='color:#ccc'>" + formatAsCurrency(d.performance) + "</span>";
+            });
+
 function drawLineChart() {
 
   var w = 400;
@@ -46,13 +53,6 @@ function drawLineChart() {
   var datasetNest = d3.nest()
                       .key(function(d){return d.teamMember;})
                       .entries(datasetLineChart);
-
-  var tip = d3.tip()
-              .attr("class", "d3-tip")
-              .offset([-10, 0])
-              .html(function(d) {
-                return d.year + " : <span style='color:#ccc'>" + formatAsCurrency(d.performance) + "</span>";
-              });
 
   var svg = d3.select("#lineChart")
               .append("svg")
@@ -152,13 +152,6 @@ function updateLineChart(teamMember, color) {
   var w = 400;
   var h = 283;
   var p = 30;
-
-  var tip = d3.tip()
-              .attr("class", "d3-tip")
-              .offset([-10, 0])
-              .html(function(d) {
-                return d.year + " : <span style='color:#ccc'>" + formatAsCurrency(d.performance) + "</span>";
-              });
 
   var svg = d3.select("#lineChart svg")
               .call(tip);
